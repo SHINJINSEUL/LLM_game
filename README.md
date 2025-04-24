@@ -45,7 +45,7 @@ streamlit run LLM_game.py --server.address 0.0.0.0 --server.port 8000
 ```
 
 ### 5. 접속 방법
-- RunPod가 부여한 외부 IP + 포트 (예: `69.30.xx.xx:22098`)로 접속
+- RunPod가 부여한 외부 IP + 포트 (예: `69.30.xx.xx:22019`)로 접속
 
 ---
 
