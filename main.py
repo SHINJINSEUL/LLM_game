@@ -28,7 +28,7 @@ CATEGORIES = {
 }
 
 # --- 설명 JSON 불러오기 ---
-with open("/mnt/data/full_100_descriptions.json", "r", encoding="utf-8") as f:
+with open("/workspace/LLM_game/data/full_100_descriptions.json", "r", encoding="utf-8") as f:
     DESCRIPTIONS = json.load(f)
 
 # --- Streamlit 설정 ---
