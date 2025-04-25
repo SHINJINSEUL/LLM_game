@@ -28,7 +28,7 @@ CATEGORIES = {
 }
 
 # --- 설명 JSON 불러오기 ---
-with open("/workspace/LLM_game/data/full_100_descriptions.json", "r", encoding="utf-8") as f:
+with open("/workspace/data/descriptions.json", "r", encoding="utf-8") as f:
     DESCRIPTIONS = json.load(f)
 
 # --- Streamlit 설정 ---
@@ -89,7 +89,7 @@ def ask_eeve(user_prompt, system_prompt):
     )
     return response['message']['content']
 
-st.markdown("AI가 한 인물을 정했어요. 질문을 통해 10번 안에 정체를 맞혀보세요!")
+st.markdown("AI가 한 인물을 정했어요. 질문을 통해 5번 안에 정체를 맞혀보세요!")
 
 # --- 이전 대화 표시 ---
 for msg in st.session_state.chat:
@@ -97,10 +97,10 @@ for msg in st.session_state.chat:
         st.markdown(msg["content"])
 
 # --- 남은 질문 수 표시 ---
-st.info(f"🧠 남은 질문 수: {10 - st.session_state.question_count} / 10")
+st.info(f"🧠 남은 질문 수: {5 - st.session_state.question_count} / 5")
 
 # --- 채팅 입력 ---
-if not st.session_state.solved and st.session_state.question_count < 10:
+if not st.session_state.solved and st.session_state.question_count < 5:
     user_input = st.chat_input("질문해보세요! 예: '사람이야?' 또는 '너 정국이야?'")
     if user_input:
         with st.chat_message("user"):
@@ -129,6 +129,14 @@ if not st.session_state.solved and st.session_state.question_count < 10:
             st.session_state.chat.append({"role": "assistant", "content": response})
 
 # --- 실패 시 정답 공개 ---
-if not st.session_state.solved and st.session_state.question_count >= 10:
+if not st.session_state.solved and st.session_state.question_count >= 5:
     st.session_state.solved = True
-    st.error(f"❌ 10번 안에 못 맞췄어요! 정답은 **{st.session_state.character_name}**였습니다!")
+    st.error(f"❌ 5번 안에 못 맞췄어요! 정답은 **{st.session_state.character_name}**였습니다!")
+
+# --- 게임 리셋 버튼 ---
+if st.session_state.solved:
+    if st.button("🔁 다시 시작하기"):
+        for key in ["character", "category", "character_name", "chat", "question_count", "solved", "system_prompt"]:
+            if key in st.session_state:
+                del st.session_state[key]
+        st.experimental_rerun()
